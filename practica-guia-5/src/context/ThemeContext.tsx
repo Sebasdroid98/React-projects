@@ -1,4 +1,4 @@
-import { createContext, type PropsWithChildren, useContext, useState } from 'react';
+import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 interface ThemeState {
     theme: string;
@@ -12,10 +12,24 @@ export const useThemeContext = () => useContext(ThemeContext);
 export const ThemeProvider = ({ children }: PropsWithChildren) => {
     const [theme, setTheme] = useState<string>('light');
 
+    // Leer tema guardado en localStorage al montar
+    useEffect(() => {
+        const storedTheme = localStorage.getItem("app-theme");
+        if (storedTheme) {
+        setTheme(storedTheme);
+            document.documentElement.classList.add(storedTheme);
+        }
+    }, [theme]);
+
     function toggleTheme() {
-        console.log("Tema actual", theme);
-        setTheme((theme) => (theme === 'light' ? 'dark' : 'light'));
-        console.log("Tema nuevo", theme);
+        const newTheme = theme === "light" ? "dark" : "light";
+
+        // Remover el tema anterior y aplicar el nuevo
+        document.documentElement.classList.remove(theme);
+        document.documentElement.classList.add(newTheme);
+
+        setTheme(newTheme);
+        localStorage.setItem("app-theme", newTheme);
     }
 
     return <ThemeContext.Provider

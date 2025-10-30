@@ -3,7 +3,8 @@ import React from 'react'
 
 interface Props {
   label: string;
-  position?: "left" | "right";
+  position?: "left" | "right" | "center";
+  backgroundColor?: string;
   // Actions
   onPress?: () => void;
   onLongPress?: () => void;
@@ -11,16 +12,17 @@ interface Props {
 
 export default function FAB({ 
   label,
+  position = "right",
+  backgroundColor = "#007AFF",
   onPress,
   onLongPress,
-  position = "right" 
 }: Props)
 {
   // Estilos del componente
   const styles = StyleSheet.create({
     floattingButton: {
       position: "absolute",
-      bottom: 20,
+      bottom: 50,
       backgroundColor: "#007AFF",
       borderRadius: 15,
       padding: 10,
@@ -37,16 +39,21 @@ export default function FAB({
     positionLeft: {
       left: 20,
     },
+    positionCenter: {
+      left: '43%',
+    },
   });
 
   return (
     <Pressable
-      style={(pressed) => [
+      style={({pressed}) => [
         styles.floattingButton,
-        position === "right" ? styles.positionRight : styles.positionLeft,
-        pressed ? { opacity: 0.7 } : { opacity: 1 },
+        {backgroundColor},
+        position === "right" && styles.positionRight,
+        position === "left" && styles.positionLeft,
+        position === "center" && styles.positionCenter,
+        pressed && { opacity: 0.7 },
       ]}
-
       onPress={onPress}
       onLongPress={onLongPress}
     >

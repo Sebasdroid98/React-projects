@@ -5,7 +5,7 @@ interface Props {
   label: string;
   position?: "left" | "right" | "center";
   backgroundColor?: string;
-  // Actions
+  // Acciones
   onPress?: () => void;
   onLongPress?: () => void;
 }
